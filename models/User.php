@@ -2,9 +2,12 @@
 
 namespace app\models;
 
+<<<<<<< HEAD
 use Yii;
 use yii\base\Model;
 
+=======
+>>>>>>> origin/master
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
     public $id;
@@ -104,4 +107,8 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     {
         return $this->password === $password;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
