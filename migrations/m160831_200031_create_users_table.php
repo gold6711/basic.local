@@ -2,11 +2,14 @@
 
 use yii\db\Migration;
 
-class m160829_223525_user extends Migration
+/**
+ * Handles the creation of table `users`.
+ */
+class m160831_200031_create_users_table extends Migration
 {
     public function safeUp()
     {
-        $this->createTable('user', [
+        $this->createTable('users', [
             'id' => $this->primaryKey(),
             'username' => $this->string(128)->notNull()->unique(),
             'name' => $this->string(45)->notNull(),
@@ -19,6 +22,6 @@ class m160829_223525_user extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('user');
+        $this->dropTable('users');
     }
 }
