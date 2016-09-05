@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\User */
+/* @var $model app\models\CalendarAccess */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Calendar Accesses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-view">
+<div class="calendar-access-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,16 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'username',
-           // 'name',
-           // 'surname',
-            [
-                'label' => 'ФИО',
-                'value' => $model->name ." ". $model->surname,
-            ],
-           // 'password',
-           // 'access_token',
-           // 'create_date',
+            'user_owner',
+            'user_guest',
+            'date',
         ],
     ]) ?>
 
