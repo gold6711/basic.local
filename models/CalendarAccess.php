@@ -4,7 +4,9 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
-use app\models\query\CalendarQuery;
+use app\models\query\CalendarAccessQuery;
+use app\controllers;
+use dosamigos\datetimepicker\DateTimepicker;
 
 /**
  * This is the model class for table "calendar_access".
@@ -16,6 +18,7 @@ use app\models\query\CalendarQuery;
  */
 class CalendarAccess extends ActiveRecord
 {
+    const ACCESS_FORBIDDEN = 0;
     const ACCESS_CREATOR = 1;
     const ACCESS_GUEST = 2;
 
@@ -36,6 +39,8 @@ class CalendarAccess extends ActiveRecord
             [['user_owner', 'user_guest', 'date'], 'required'],
             [['user_owner', 'user_guest'], 'integer'],
             [['date'], 'safe'],
+            ['user_guest', 'compare', 'compareAttribute' => 'user_owner', 'operator' => '!=', 'message' => 'Нельзя предоставить доступ для своей учетной записи'],
+            ['date', 'unique', 'targetAttribute' => ['user_guest', 'date'], 'message' => 'Доступ для этой учетной записи на эту дату уже предоставлен'],
             [['user_guest'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_guest' => 'id']],
             [['user_owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_owner' => 'id']],
         ];
@@ -59,7 +64,7 @@ class CalendarAccess extends ActiveRecord
      */
     public function getUserGuest()
     {
-        return $this->hasMany(User::className(), ['id' => 'user_guest']);
+        return $this->hasOne(User::className(), ['id' => 'user_guest']);
     }
 
     /**
@@ -78,31 +83,32 @@ class CalendarAccess extends ActiveRecord
      */
     public static function checkAccess($model)
     {
-        if ($model->creator == Yii::$app->user->id){
+        $owner = $model->creator;
+        $guest = \Yii::$app->user->id;
+        $date = date_create($model->event_start)->format('Y-m-d');  //// date_event ->  date  /////
+
+        if ($guest == $model->creator) {                        ///// user_owner   //////////
             return self::ACCESS_CREATOR;
+        } else {
+            $isGuest = self::find()
+                ->whereDate($date)
+                ->whereUserGuest($guest)
+                ->whereUserOwner($owner)
+                ->exists();
+            return ($isGuest) ? self::ACCESS_GUEST : self::ACCESS_FORBIDDEN;
         }
-
-        $accessCalendar = self::find()
-            ->whereUserGuest(Yii::$app->user->id)
-            ->whereDate($model->getDateTimeEventStart())
-            ->exists();
-
-        if ($accessCalendar)
-            return self::ACCESS_GUEST;
-
-        return false;
     }
 
-    /**
-     * Check logged user is creator or not
-     *
-     * @param Calendar $model
-     * @return bool
-     */
-    public static function checkIsCreator ($model)
+//    public static function checkIsCreator ($model)
+//    {
+//        return self::checkAccess($model) == self::ACCESS_CREATOR;
+//    }
+
+    public static function checkIsCreator($model)               //// isOwner -> checkIsCreator  ///////
     {
-        return self::checkAccess($model) == self::ACCESS_CREATOR;
+        return $model->user_owner === \Yii::$app->user->id;
     }
+
 
 
     /**
@@ -111,6 +117,6 @@ class CalendarAccess extends ActiveRecord
      */
     public static function find()
     {
-        return new \app\models\query\CalendarAccessQuery(get_called_class());
+        return new CalendarAccessQuery(get_called_class());
     }
 }

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\search\CalendarAccess */
+/* @var $model app\models\search\CalendarAccessSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -17,9 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'user_owner') ?>
+    <?= $form->field($model, 'ownerId') ?>
 
-    <?= $form->field($model, 'user_guest') ?>
+    <?= $form->field($model, 'guestId') ?>
 
     <?= $form->field($model, 'date') ?>
 

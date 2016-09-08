@@ -5,12 +5,12 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Calendar as CalendarModel;
+use app\models\User;
 
 /**
- * Calendar represents the model behind the search form of `app\models\Calendar`.
+ * User represents the model behind the search form of `app\models\User`.
  */
-class Calendar extends CalendarModel
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class Calendar extends CalendarModel
     public function rules()
     {
         return [
-            [['id', 'creator'], 'integer'],
-            [['text', 'event_start', 'event_end'], 'safe'],
+            [['id'], 'integer'],
+            [['username', 'name', 'surname', 'password', 'access_token', 'create_date'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class Calendar extends CalendarModel
      */
     public function search($params)
     {
-        $query = CalendarModel::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -60,12 +60,14 @@ class Calendar extends CalendarModel
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'creator' => $this->creator,
-            'event_start' => $this->event_start,
-            'event_end' => $this->event_end,
+            'create_date' => $this->create_date,
         ]);
 
-        $query->andFilterWhere(['like', 'text', $this->text]);
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'surname', $this->surname])
+            ->andFilterWhere(['like', 'password', $this->password])
+            ->andFilterWhere(['like', 'access_token', $this->access_token]);
 
         return $dataProvider;
     }

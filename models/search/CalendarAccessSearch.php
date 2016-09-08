@@ -5,12 +5,12 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CalendarAccess as CalendarAccessModel;
+use app\models\CalendarAccess;
 
 /**
- * CalendarAccess represents the model behind the search form of `app\models\CalendarAccess`.
+ * CalendarAccessSearch represents the model behind the search form about `app\models\CalendarAccess`.
  */
-class CalendarAccessSearch extends CalendarAccessModel
+class CalendarAccessSearch extends CalendarAccess
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class CalendarAccessSearch extends CalendarAccessModel
      */
     public function search($params)
     {
-        $query = CalendarAccessModel::find();
+        $query = CalendarAccess::find();
 
         // add conditions that should always apply here
 
@@ -53,14 +53,14 @@ class CalendarAccessSearch extends CalendarAccessModel
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_owner' => $this->user_owner,
+            'user_owner' => \Yii::$app->user->id,
             'user_guest' => $this->user_guest,
             'date' => $this->date,
         ]);

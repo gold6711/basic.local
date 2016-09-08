@@ -1,21 +1,27 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Calendar */
 
-$this->title = Yii::t('app', 'Создать событие');
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Календарь'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="calendar-create">
+<div class="calendar-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= DetailView::widget([
         'model' => $model,
+        'attributes' => [
+            'id',
+            'text:ntext',
+            'creatorId',
+            'date_event',
+        ],
     ]) ?>
 
 </div>

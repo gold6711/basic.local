@@ -35,13 +35,13 @@ class CalendarAccessQuery extends \yii\db\ActiveQuery
 
     public function whereUserOwner($ownerId)
     {
-        return $this->andWhere('ownerId = :ownerId', ['ownerId' => $ownerId]);
+        return $this->andWhere('user_owner = :user_owner', ['user_owner' => $ownerId]);
     }
 
 
     public function whereUserGuest($guestId)
     {
-        return $this->andWhere('guestId = :guestId', ['guestId' => $guestId]);
+        return $this->andWhere('user_guest = :user_guest', ['user_guest' => $guestId]);
     }
 
 

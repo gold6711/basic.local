@@ -83,7 +83,7 @@ class CalendarAccessController extends Controller
     public function actionCreate()
     {
         $model = new CalendarAccess();
-        $model->ownerId = Yii::$app->user->id;
+        $model->user_owner = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -107,7 +107,7 @@ class CalendarAccessController extends Controller
         $model = $this->findModel($id);
 
         // Редактирование разрешено только при наличии прав хозяина записи
-        if(!CalendarAccess::isOwner($model)) {
+        if(!CalendarAccess::checkIsCreator($model)) {
             throw new ForbiddenHttpException("Not allowed!");
         }
 

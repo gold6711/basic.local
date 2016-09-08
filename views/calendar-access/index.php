@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use bootui\datetimepicker\Datepicker;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\CalendarAccess */
+/* @var $searchModel app\models\search\CalendarAccessSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Calendar Accesses');
+$this->title = Yii::t('app', 'Доступ к событиям');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="calendar-access-index">
@@ -16,18 +17,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Calendar Access'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Предоставить доступ к событиям'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
+
+        'dataProvider' => $ownerDataProvider = $searchModel->search(Yii::$app->request->queryParams),
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'user_owner',
             'user_guest',
-            'date',
+            [
+                'attribute' => 'date',
+                'value' => 'date',
+                'format' => 'date',
+                'filter' => Datepicker::widget([
+                        'name' => 'CalendarAccessSearch[date]',
+                        'options' => ['class' => 'form-control'],
+                        'value' => Yii::$app->getRequest()->get('CalendarAccessSearch')['date']
+                    ]),
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

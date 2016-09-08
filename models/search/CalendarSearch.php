@@ -5,12 +5,14 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\User as UserModel;
+use app\models\Calendar;
 
 /**
- * User represents the model behind the search form of `app\models\User`.
+ * CalendarSearch represents the model behind the search form about `app\models\Calendar`.
  */
-class User extends UserModel
+
+
+class CalendarSearch extends Calendar
 {
     /**
      * @inheritdoc
@@ -18,8 +20,8 @@ class User extends UserModel
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['username', 'name', 'surname', 'password', 'access_token', 'create_date'], 'safe'],
+            [['id' /*'creatorId'*/], 'integer'],
+            [['text', 'event_start'], 'safe'],
         ];
     }
 
@@ -28,7 +30,7 @@ class User extends UserModel
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
+
         return Model::scenarios();
     }
 
@@ -39,11 +41,9 @@ class User extends UserModel
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function searchOwner($params)
     {
-        $query = UserModel::find();
-
-        // add conditions that should always apply here
+        $query = Calendar::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -53,21 +53,18 @@ class User extends UserModel
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'create_date' => $this->create_date,
+            //'creatorId' => \Yii::$app->user->id,
+            'CAST(date_event as DATE)' => $this->event_start
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'surname', $this->surname])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'access_token', $this->access_token]);
+        $query->andFilterWhere(['like', 'text', $this->text]);
 
         return $dataProvider;
     }

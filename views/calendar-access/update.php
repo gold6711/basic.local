@@ -5,12 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CalendarAccess */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Calendar Access',
-]) . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Calendar Accesses'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Изменение записи доступа ') . $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Доступ к событиям'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Изменение');
 ?>
 <div class="calendar-access-update">
 
