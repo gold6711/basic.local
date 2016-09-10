@@ -21,7 +21,7 @@ use bootui\datetimepicker\Datepicker;
                         return StringHelper::truncate($model->text, 75);
                     }
             ],
-            'creatorId',
+            'creator',
             [
                 'attribute' => 'event_start',
                 'value' => 'event_start',

@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use app\models\query\CalendarQuery;
-use dosamigos\datetimepicker\DateTimepicker;
 
 /**
  * This is the model class for table "calendar".
@@ -51,10 +50,8 @@ class Calendar extends ActiveRecord
             'creator' => Yii::t('app', 'Creator'),
             'event_start' => Yii::t('app', 'Event Start'),
             'event_end' => Yii::t('app', 'Event End'),
-           // 'user_name' => Yii::t('app', 'CreatorID')
         ];
     }
-
 
     /**
      * @return \yii\db\ActiveQuery
@@ -63,26 +60,6 @@ class Calendar extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'creator']);
     }
-
-
-
-//    public function getUser()
-//    {
-//        return $this->hasOne(User::className(), ['id' => 'creator']);
-//    }
-//
-//    public function getDateTimeEventStart()
-//    {
-//        $date = new \DateTime($this->event_start);
-//        return $date->format('d/m/Y h:m');
-//    }
-//
-//
-//    public function getDateTimeEventEnd()
-//    {
-//        $date = new \DateTime($this->event_end);
-//        return $date->format('d/m/Y h:m');
-//    }
 
     /**
      * @inheritdoc
