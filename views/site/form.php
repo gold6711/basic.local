@@ -10,9 +10,10 @@ use yii\helpers\Html;
     <p>и заказ: <b><?=$order?></b></p>
 <?php } ?>
 
-<?php $f = ActiveForm::begin(); ?>
+<?php $f = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <?=$f->field($form, 'name'); ?>
     <?=$f->field($form, 'email'); ?>
     <?=$f->field($form, 'order'); ?>
+    <?=$f->field($form, 'file')->fileInput(); ?>
     <?=Html::submitButton('Отправить'); ?>
 <?php ActiveForm::end(); ?>
