@@ -60,7 +60,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest)
+            return $this->render('index');
+        else
+            return $this->redirect("/calendar", 301);
     }
 
     /**
