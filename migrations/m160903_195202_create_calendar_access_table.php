@@ -19,8 +19,8 @@ class m160903_195202_create_calendar_access_table extends Migration
             'date'=>$this->date()->notNull(),
 
         ]);
-        $this->addForeignKey('FK_user_owner', 'calendar_access', 'user_owner', 'users', 'id', 'NO ACTION', 'NO ACTION');
-        $this->addForeignKey('FK_user_guest', 'calendar_access', 'user_guest', 'users', 'id', 'NO ACTION', 'NO ACTION');
+        $this->addForeignKey('FK_user_owner', 'calendar_access', 'user_owner', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_user_guest', 'calendar_access', 'user_guest', 'users', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
