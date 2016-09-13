@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\MyForm;
+use app\models\Comments;
+use yii\data\Pagination;
 
 class SiteController extends Controller
 {
@@ -156,5 +158,41 @@ class SiteController extends Controller
          'order'=> $order,
         ]
         );
+    }
+
+    /**
+     * New action for users comments
+     */
+    public function actionComments()
+    {
+        $comments = Comments::find(); // можно добавлять ->offset()->limit()->orderBy() значения
+
+        $pagination = new Pagination ([
+           'defaultPageSize' => 2,
+           'totalCount' => $comments->count()
+        ]);
+
+        $comments = $comments->offset($pagination->offset)
+                             ->limit($pagination->limit)
+                             ->all();
+
+        return $this->render('comments',[
+            'comments' => $comments,
+            'pagination' => $pagination,
+            'name' => Yii::$app->session->get('name')
+        ]);
+    }
+
+    public function actionUser()
+    {
+        $name = Yii::$app->request->get('name', 'гость');
+
+        $session = Yii::$app->session;
+
+        $session->set('name', $name);
+
+        return $this->render('user', [
+           'name' => $name
+        ]);
     }
 }
